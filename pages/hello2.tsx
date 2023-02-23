@@ -1,4 +1,4 @@
-import AppHead from "~/components/AppHead"
+import AppHead from "~/lib/AppHead"
 
 export default function Hello() {
 	return (
