@@ -10,3 +10,4 @@ npm run lint && npm run fmt
 ## Stack
 
 - [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
