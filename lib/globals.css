@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.typewriter {
+	font-family: "Labrada", serif;
+	font-weight: 600;
+	letter-spacing: 1px;
+}
