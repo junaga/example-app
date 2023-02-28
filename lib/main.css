@@ -1,0 +1,12 @@
+body {
+	--background: white;
+	--highlight: #3f95db;
+
+	--highlight: #bb323d;
+}
+
+.typewriter {
+	font-family: "Labrada", serif;
+	font-weight: 600;
+	letter-spacing: 1px;
+}
