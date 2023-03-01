@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+div#__next {
+	height: 100%;
+}
+
 body {
 	--background: white;
 	--highlight: #3f95db;
