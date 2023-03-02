@@ -1,7 +1,9 @@
 // https://quilljs.com/docs/
 
 import "react-quill/dist/quill.snow.css"
+import { useState } from "react"
 import dynamic from "next/dynamic"
+import type { Range, UnprivilegedEditor } from "react-quill"
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
 	ssr: false,
 	loading: () => <p>Loading ...</p>
@@ -20,9 +22,26 @@ const config = {
 }
 
 export default function Editor() {
+	function selectionHandle(
+		selection: Range,
+		source: "user" | "api" | "silent",
+		quill: UnprivilegedEditor
+	) {
+		if (source === "user" && selection !== null && selection.length > 0) {
+			const { index, length } = selection
+
+			const before = quill.getText(0, index)
+			const selected = quill.getText(index, length)
+			const after = quill.getText(index + length, quill.getLength())
+
+			console.log({ before, selection: selected, after })
+		}
+	}
+
 	return (
 		<>
 			<QuillNoSSRWrapper
+				onChangeSelection={selectionHandle}
 				id="editor"
 				className="prose"
 				theme="snow"
