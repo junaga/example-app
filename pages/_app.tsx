@@ -1,6 +1,8 @@
-import "~/lib/globals.css"
+import "react-quill/dist/quill.snow.css"
+
 import type { AppProps } from "next/app"
 import Head from "next/head"
+import "~/lib/globals.css"
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }: AppProps) {
