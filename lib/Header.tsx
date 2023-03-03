@@ -23,6 +23,7 @@ export default function Header() {
 				}
 
 				header {
+					z-index: 1;
 					position: fixed;
 					width: 100%;
 					top: 0;
