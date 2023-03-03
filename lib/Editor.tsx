@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import dynamic from "next/dynamic"
-import type { Range, UnprivilegedEditor } from "react-quill"
+import "react-quill/dist/quill.snow.css"
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
 	ssr: false,
 	loading: () => <p>Loading ...</p>
 })
+import type { Range, UnprivilegedEditor } from "react-quill"
 
 const config = {
 	toolbar: [
