@@ -1,5 +1,6 @@
 import AppHead from "~/lib/AppHead"
 import Header from "~/lib/Header"
+import Editor from "~/lib/Editor"
 const endpoint = "/api/openai"
 import type { RequestBody, ResponseBody } from "./api/openai"
 
@@ -23,11 +24,13 @@ export default function IndexPage() {
 	return (
 		<>
 			<AppHead title={title} />
+			<Header />
 			<main>
 				<form onSubmit={submit}>
 					<input type="text" name="prompt" />
 					<input type="submit" value="Generate names" />
 				</form>
+				<Editor />
 			</main>
 
 			<style jsx>

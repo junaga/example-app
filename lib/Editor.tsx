@@ -1,23 +1,16 @@
-// https://quilljs.com/docs/
+// https://github.com/zenoamaro/react-quill#quick-start
 
 import "react-quill/dist/quill.snow.css"
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import type { Range, UnprivilegedEditor } from "react-quill"
-const QuillNoSSRWrapper = dynamic(import("react-quill"), {
-	ssr: false,
-	loading: () => <p>Loading ...</p>
+const Quill = dynamic(import("react-quill"), {
+	loading: () => <p>Loading ...</p>,
+	ssr: false
 })
 
 const config = {
-	toolbar: [
-		[{ font: [] }],
-		[{ size: [] }],
-		["bold", "italic"],
-		[{ list: "ordered" }, { list: "bullet" }],
-		["link", "image"],
-		["clean"]
-	],
+	toolbar: ".toolbar",
 	clipboard: { matchVisual: true }
 }
 
@@ -40,43 +33,46 @@ export default function Editor() {
 
 	return (
 		<>
-			<QuillNoSSRWrapper
-				onChangeSelection={selectionHandle}
-				id="editor"
-				className="prose"
-				theme="snow"
-				modules={config}
-			/>
-
+			<menu className="toolbar">
+				<select className="ql-font" />
+				<select className="ql-size">
+					<option value="small">Klein</option>
+					<option value="normal" selected>
+						Normal
+					</option>
+					<option value="large">Groß</option>
+					<option value="huge">Riesig</option>
+				</select>
+				<button className="ql-bold" />
+				<button className="ql-italic" />
+				<button className="ql-list" value="ordered" />
+				<button className="ql-list" value="bullet" />
+				<select className="ql-align" />
+				<button className="ql-link" />
+				<button className="ql-image" />
+				<div>hello</div>
+			</menu>
+			<Quill className="prose" modules={config} theme="snow">
+				<div className="print editor" />
+			</Quill>
 			<style jsx>{`
 				@media screen {
-					:global(#editor) {
-						margin: 0 auto;
-
-						max-width: none;
+					.toolbar {
+						display: flex;
+						flex-direction: row;
+						width: min-content;
+						margin: 8px;
+					}
+					.editor {
+						margin: 16px;
 						width: 210mm;
+						height: 297mm;
 						box-shadow: 0 5px 10px #000;
 					}
-					:global(#editor .ql-editor) {
-						height: 297mm;
-					}
-					:global(#editor ::selection) {
-						background: #d38d93;
-					}
-				}
 
-				@media print {
-					@page {
-						margin: 0;
-					}
-					:global(#editor .ql-toolbar) {
-						display: none;
-					}
-					:global(#editor *) {
-						width: 100%;
-						margin: none;
-						padding: none;
-						border: none;
+					// does not seem to work without this hack
+					:global(.editor ::selection) {
+						background-color: #d38d93;
 					}
 				}
 			`}</style>
