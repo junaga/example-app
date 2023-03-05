@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Button } from "@chakra-ui/react"
 
 export default function Header() {
 	return (
@@ -12,7 +13,9 @@ export default function Header() {
 						</span>
 					</a>
 				</Link>
-				<Link href="new">Generieren</Link>
+				<Button variant="solid">
+					<Link href="new">Generieren</Link>
+				</Button>
 			</header>
 
 			<style jsx>{`

@@ -1,7 +1,7 @@
-import "~/lib/main.css"
-
 import type { AppProps } from "next/app"
 import Head from "next/head"
+import { ChakraProvider } from "@chakra-ui/react"
+import "~/lib/main.css"
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
@@ -13,7 +13,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 					href="https://fonts.googleapis.com/css2?family=Labrada&display=swap"
 				/>
 			</Head>
-			<Component {...pageProps} />
+			<ChakraProvider>
+				<Component {...pageProps} />
+			</ChakraProvider>
 		</>
 	)
 }
