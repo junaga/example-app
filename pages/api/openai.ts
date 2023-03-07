@@ -2,6 +2,9 @@ import { Configuration, OpenAIApi, CreateCompletionResponse } from "openai"
 import { NextApiRequest, NextApiResponse } from "next"
 const apiKey = process.env.OPENAI_API_KEY
 
+export type RequestBody = { prompt: string }
+export type ResponseBody = CreateCompletionResponse
+
 async function openai(prompt: string): Promise<CreateCompletionResponse> {
 	return (
 		await new OpenAIApi(new Configuration({ apiKey })).createCompletion({
@@ -12,9 +15,6 @@ async function openai(prompt: string): Promise<CreateCompletionResponse> {
 		})
 	).data
 }
-
-export type RequestBody = { prompt: string }
-export type ResponseBody = CreateCompletionResponse
 
 export default async function Handler(
 	req: NextApiRequest,
