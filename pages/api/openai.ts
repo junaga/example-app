@@ -6,10 +6,18 @@ export type RequestBody = { prompt: string }
 export type ResponseBody = CreateCompletionResponse
 
 async function openai(prompt: string): Promise<CreateCompletionResponse> {
+	// https://platform.openai.com/docs/models
+	const models = {
+		// Good at: Conversation and text generation
+		turbo: "gpt-3.5-turbo",
+		// Good at: Complex intent, cause and effect, summarization for audience
+		davinci: "text-davinci-003"
+	}
+
 	return (
 		await new OpenAIApi(new Configuration({ apiKey })).createCompletion({
 			prompt: prompt,
-			model: "text-davinci-003",
+			model: models.turbo,
 			temperature: 1,
 			max_tokens: 1000
 		})
