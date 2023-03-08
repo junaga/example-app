@@ -1,38 +1,50 @@
 // https://github.com/zenoamaro/react-quill#quick-start
 
-import "react-quill/dist/quill.snow.css"
 import { useState } from "react"
 import dynamic from "next/dynamic"
-import type { Range, UnprivilegedEditor } from "react-quill"
+import "react-quill/dist/quill.snow.css"
 const Quill = dynamic(import("react-quill"), {
 	loading: () => <p>Loading ...</p>,
 	ssr: false
 })
-
-const config = {
-	toolbar: ".toolbar",
-	clipboard: { matchVisual: true }
-}
+import { DeltaStatic } from "quill"
+import type { Range, UnprivilegedEditor } from "react-quill"
 
 export default function Editor() {
-	function selectionHandle(
-		selection: Range,
-		source: "user" | "api" | "silent",
-		quill: UnprivilegedEditor
+	const [document, setDocument] = useState<DeltaStatic | null>(null)
+	const [selection, setSelection] = useState<DeltaStatic | null>(null)
+
+	function change(
+		htmlString: string,
+		delta: Value,
+		source: "api" | "user" | "silent",
+		editor: UnprivilegedEditor
 	) {
-		if (source === "user" && selection !== null && selection.length > 0) {
-			const { index, length } = selection
+		setDocument(editor.getContents())
+	}
 
-			const before = quill.getText(0, index)
-			const selected = quill.getText(index, length)
-			const after = quill.getText(index + length, quill.getLength())
-
-			console.log({ before, selection: selected, after })
+	function selectionHandle(
+		range: Range,
+		source: "api" | "user" | "silent",
+		editor: UnprivilegedEditor
+	) {
+		if (source === "user" && range !== null && range.length > 0) {
+			const { index, length } = range
+			const delta = editor.getContents()
+			// console.log("selection", index, length)
+			setSelection(editor.getContents(index, length))
 		}
+	}
+
+	function click() {
+		setDocument(document.insert("hello"))
+		console.log(document.ops)
 	}
 
 	return (
 		<>
+			<div>{JSON.stringify(document?.ops)}</div>
+			<div>{JSON.stringify(selection?.ops)}</div>
 			<menu className="toolbar">
 				<select className="ql-font" />
 				<select className="ql-size">
@@ -50,11 +62,19 @@ export default function Editor() {
 				<select className="ql-align" />
 				<button className="ql-link" />
 				<button className="ql-image" />
-				<div>hello</div>
+				<button onClick={click}>hello</button>
 			</menu>
-			<Quill className="prose" modules={config} theme="snow">
-				<div className="print editor" />
-			</Quill>
+			<Quill
+				className="print editor"
+				defaultValue={document}
+				onChange={change}
+				onChangeSelection={selectionHandle}
+				modules={{
+					toolbar: ".toolbar",
+					clipboard: { matchVisual: true }
+				}}
+				theme="snow"
+			/>
 			<style jsx>{`
 				@media screen {
 					.toolbar {
@@ -63,7 +83,7 @@ export default function Editor() {
 						width: min-content;
 						margin: 8px;
 					}
-					.editor {
+					:global(.editor) {
 						margin: 16px;
 						width: 210mm;
 						height: 297mm;
